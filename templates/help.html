@@ -1,0 +1,47 @@
+<!-- Your existing HTML content -->
+<h1>IP Address Collector</h1>
+<p>By clicking the button below, you consent to share your IP address for this demonstration.</p>
+<button onclick="getIPAddress()">Get My IP Address</button>
+<p>Your IP Address: <span id="ipAddress"></span></p>
+
+<!-- Google Form -->
+<iframe
+  src="https://forms.gle/JfHwgpkrYyiQqRUp8"
+  width="100%"
+  height="500"
+  frameborder="0"
+  marginheight="0"
+  marginwidth="0"
+>Loading...</iframe>
+
+<!-- Your existing JavaScript code -->
+<script>
+  function getIPAddress() {
+    fetch('https://api64.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('ipAddress').textContent = data.ip;
+        
+        // Submit the IP address to Google Form
+        const formURL = 'https://forms.gle/JfHwgpkrYyiQqRUp8'; // Replace with your Google Form URL
+        const ipAddress = data.ip;
+        const formData = new FormData();
+        formData.append('entry.IP_ADDRESS', ipAddress);
+
+        fetch(formURL, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData
+        })
+        .then(response => {
+          // Optional: Do something after submitting the form
+        })
+        .catch(error => {
+          console.error('Error submitting IP address:', error);
+        });
+      })
+      .catch(error => {
+        console.error('Error fetching IP address:', error);
+      });
+  }
+</script>
